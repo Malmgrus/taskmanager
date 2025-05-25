@@ -1,0 +1,9 @@
+<button (click)="addProject()">Add Project</button>
+
+@for (item of project; track $index) {
+  <article class="project-card">
+    <input value={{item.proName}} (input)="addName(item.id, $event)" type="text" placeholder="Project Name">
+    <a routerLink="/project">view tasks</a>
+    <button (click)="removeProject(item.id)">Remove</button>
+  </article>
+}

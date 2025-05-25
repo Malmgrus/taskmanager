@@ -1,0 +1,11 @@
+<button (click)="addTask()">Add task</button>
+<div>
+    @for (item of task; track $index) {
+    <article class="task-card">
+        <input value={{item.taskName}} (input)="addTaskName(item.id, $event)" type="text" placeholder="Task Name">
+        <input (input)="addTaskDescription(item.id, $event)" type="text" placeholder="Task Description">
+        <!--<button (click)="removeTask(item.id)">Remove</button>-->
+    </article>
+    }
+    
+</div>

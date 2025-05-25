@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
+import { ProjectsideComponent } from './projectside/projectside.component';
+import { ProjecttaskComponent } from './projecttask/projecttask.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet,
+    ProjectsideComponent,
+    ProjecttaskComponent,
+    RouterModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
