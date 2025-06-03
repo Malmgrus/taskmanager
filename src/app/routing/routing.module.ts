@@ -4,10 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProjecttaskComponent } from '../projecttask/projecttask.component';
 import { ProjectsideComponent } from '../projectside/projectside.component';
 
-const routes: Routes = [
-  { path: "", component: ProjectsideComponent },
-  { path: "project", component: ProjecttaskComponent}
-];
+const routes: Routes = [];
 
 @NgModule({
   declarations: [],

@@ -1,0 +1,16 @@
+.tasks {
+    display: flex;
+    justify-content: center;
+    
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+}
+
+.task-card {
+    width: 30vw;
+    display: flex;
+    flex-direction: column;
+}

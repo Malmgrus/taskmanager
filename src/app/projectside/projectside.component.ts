@@ -1,41 +1,45 @@
-import { Component, signal, input } from '@angular/core';
+import { Component} from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http'
 import { Projecttracker } from '../projecttracker';
+import { ProjectServiceService } from '../projectService.service';
 
 @Component({
   selector: 'projectside',
   imports: [    CommonModule,
     FormsModule,
-    RouterModule],
+    RouterModule,
+    HttpClientModule],
   templateUrl: './projectside.component.html',
   styleUrl: './projectside.component.css'
 })
 
 export class ProjectsideComponent {
-  defaultName: string = "Project";
   count: number = 0;
-  project: Projecttracker[] = [{
-    id: 0,
-    proName: this.defaultName,
-    tasks: {taskName: "", description: ""}
-  }];
+  default = "";
+  project: Projecttracker[] = [];
+  filteredPro: any[] = [];
+
+    constructor(private router: Router, private ProjectServiceService: ProjectServiceService) {
+  }
+  ngOnInit() {
+    this.project = this.ProjectServiceService.getProjects();
+    this.filteredPro = this.project
+  }
 
   addProject() {
     this.count++;
-    this.project.push({id: this.count, proName: this.defaultName, tasks: {taskName: "", description: ""}});
+    this.project.push({id: this.count, proName: "project", tasks: 
+      [{taskId: 0, taskName: "", description: "", priority: 3, status: 1}]});
+    
+    this.ProjectServiceService.setProjects(this.project);
   }
 
   removeProject(id: number) {
     this.project.splice(id, 1);
     console.log(this.project);
-  }
-
-  constructor(private router: Router) {
-  }
-  ngOnInit() {
-    //körs i början som rolig hook
   }
 
   addName(id: number, $event: Event) {
@@ -45,5 +49,23 @@ export class ProjectsideComponent {
     if (project) {
       project.proName = projectName;
     }
+  }
+
+  searchPro($event: Event) {
+    const input = $event.target as HTMLInputElement;
+    let tempArr = [];
+    for (let item of this.project) {
+      tempArr.push(item.proName);
+    }
+
+    if (input.value === "") {
+      this.filteredPro.splice(1)
+      this.filteredPro = [...this.project];
+    } else if (tempArr.includes(input.value)) {
+      if (!this.filteredPro.includes(input.value)) {
+        const project = this.project.filter(item => item.proName.includes(input.value))
+        this.filteredPro = [...project];
+      }
+    }  
   }
 };

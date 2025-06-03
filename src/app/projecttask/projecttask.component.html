@@ -1,11 +1,150 @@
 <button (click)="addTask()">Add task</button>
-<div>
-    @for (item of task; track $index) {
-    <article class="task-card">
-        <input value={{item.taskName}} (input)="addTaskName(item.id, $event)" type="text" placeholder="Task Name">
-        <input (input)="addTaskDescription(item.id, $event)" type="text" placeholder="Task Description">
-        <!--<button (click)="removeTask(item.id)">Remove</button>-->
-    </article>
+<div class="tasks">
+<content class="row">
+    <h2>To do</h2>
+    @for (item of loopTask(3); track $index) {
+        @if (item.priority === 1) {
+            <p>priority {{item.priority}}</p>
+            <article class="task-card">
+                <p>första</p>
+                <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
+                <input (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+                <button (click)="changePrio(item.taskId, true)">increase priority</button>
+                <button (click)="changePrio(item.taskId, false)">decrease priority</button>
+                <button (click)="changeStatus(item.taskId, true)">move status forward</button>
+                <button (click)="changeStatus(item.taskId, false)">move status backwards</button>
+                <button (click)="removeTask(item.taskId)">Remove</button>
+                <p>You have not started working on this task</p>
+            </article>
+        }
     }
-    
+    @for (item of loopTask(3); track $index) {
+        @if (item.priority === 2) {
+            <p>priority {{item.priority}}</p>
+            <article class="task-card">
+            <p>första</p>
+            <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
+            <input (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <button (click)="changePrio(item.taskId, true)">increase priority</button>
+            <button (click)="changePrio(item.taskId, false)">decrease priority</button>
+            <button (click)="changeStatus(item.taskId, true)">move status forward</button>
+            <button (click)="changeStatus(item.taskId, false)">move status backwards</button>
+            <button (click)="removeTask(item.taskId)">Remove</button>
+            <p>You have not started working on this task</p>
+        </article>
+        }
+    }
+    @for (item of loopTask(3); track $index) {
+        @if (item.priority === 3) {
+            <p>priority {{item.priority}}</p>
+            <article class="task-card">
+            <p>första</p>
+            <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
+            <input (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <button (click)="changePrio(item.taskId, true)">increase priority</button>
+            <button (click)="changePrio(item.taskId, false)">decrease priority</button>
+            <button (click)="changeStatus(item.taskId, true)">move status forward</button>
+            <button (click)="changeStatus(item.taskId, false)">move status backwards</button>
+            <button (click)="removeTask(item.taskId)">Remove</button>
+            <p>You have not started working on this task</p>
+        </article>
+        }
+    }
+</content>
+<content class="row">
+    <h2>Working on</h2>
+    @for (item of loopTask(2); track $index) {
+        @if (item.priority === 1) {
+        <article class="task-card">
+            <p>andra</p>
+            <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
+            <input (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <button (click)="changePrio(item.taskId, true)">increase priority</button>
+            <button (click)="changePrio(item.taskId, false)">decrease priority</button>
+            <button (click)="changeStatus(item.taskId, true)">move status forward</button>
+            <button (click)="changeStatus(item.taskId, false)">move status backwards</button>
+            <button (click)="removeTask(item.taskId)">Remove</button>
+            <p>You have begun working on this task</p>
+        </article>
+        }
+    }
+    @for (item of loopTask(2); track $index) {
+        @if (item.priority === 2) {
+        <article class="task-card">
+            <p>andra</p>
+            <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
+            <input (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <button (click)="changePrio(item.taskId, true)">increase priority</button>
+            <button (click)="changePrio(item.taskId, false)">decrease priority</button>
+            <button (click)="changeStatus(item.taskId, true)">move status forward</button>
+            <button (click)="changeStatus(item.taskId, false)">move status backwards</button>
+            <button (click)="removeTask(item.taskId)">Remove</button>
+            <p>You have begun working on this task</p>
+        </article>
+        }
+    }
+    @for (item of loopTask(2); track $index) {
+        @if (item.priority === 3) {
+        <article class="task-card">
+            <p>andra</p>
+            <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
+            <input (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <button (click)="changePrio(item.taskId, true)">increase priority</button>
+            <button (click)="changePrio(item.taskId, false)">decrease priority</button>
+            <button (click)="changeStatus(item.taskId, true)">move status forward</button>
+            <button (click)="changeStatus(item.taskId, false)">move status backwards</button>
+            <button (click)="removeTask(item.taskId)">Remove</button>
+            <p>You have begun working on this task</p>
+        </article>
+        }
+    }
+</content>
+<content class="row">
+    <h2>finished</h2>
+    @for (item of loopTask(1); track $index) {
+        @if (item.priority === 1) {
+        <article class="task-card">
+            <p>tredje</p>
+            <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
+            <input (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <button (click)="changePrio(item.taskId, true)">increase priority</button>
+            <button (click)="changePrio(item.taskId, false)">decrease priority</button>
+            <button (click)="changeStatus(item.taskId, true)">move status forward</button>
+            <button (click)="changeStatus(item.taskId, false)">move status backwards</button>
+            <button (click)="removeTask(item.taskId)">Remove</button>
+            <p>You have finished this task</p>
+        </article>
+        }
+    }
+    @for (item of loopTask(1); track $index) {
+        @if (item.priority === 2) {
+        <article class="task-card">
+            <p>tredje</p>
+            <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
+            <input (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <button (click)="changePrio(item.taskId, true)">increase priority</button>
+            <button (click)="changePrio(item.taskId, false)">decrease priority</button>
+            <button (click)="changeStatus(item.taskId, true)">move status forward</button>
+            <button (click)="changeStatus(item.taskId, false)">move status backwards</button>
+            <button (click)="removeTask(item.taskId)">Remove</button>
+            <p>You have finished this task</p>
+        </article>
+        }
+    }
+    @for (item of loopTask(1); track $index) {
+        @if (item.priority === 3) {
+        <article class="task-card">
+            <p>tredje</p>
+            <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
+            <input (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <button (click)="changePrio(item.taskId, true)">increase priority</button>
+            <button (click)="changePrio(item.taskId, false)">decrease priority</button>
+            <button (click)="changeStatus(item.taskId, true)">move status forward</button>
+            <button (click)="changeStatus(item.taskId, false)">move status backwards</button>
+            <button (click)="removeTask(item.taskId)">Remove</button>
+            <p>You have finished this task</p>
+        </article>
+        }
+    }
+</content>
 </div>

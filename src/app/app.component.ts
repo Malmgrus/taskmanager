@@ -5,8 +5,7 @@ import { ProjecttaskComponent } from './projecttask/projecttask.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,
-    ProjectsideComponent,
+  imports: [ProjectsideComponent,
     ProjecttaskComponent,
     RouterModule],
   templateUrl: './app.component.html',

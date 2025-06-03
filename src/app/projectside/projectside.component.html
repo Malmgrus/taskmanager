@@ -1,9 +1,12 @@
 <button (click)="addProject()">Add Project</button>
+<!--<input #searchInput type="text" placeholder="search for project">
+<button (click)="searchPro(searchInput.value)">search projects</button>-->
+<input (input)="searchPro($event)" type="text">
 
-@for (item of project; track $index) {
+@for (item of filteredPro; track $index) {
   <article class="project-card">
     <input value={{item.proName}} (input)="addName(item.id, $event)" type="text" placeholder="Project Name">
-    <a routerLink="/project">view tasks</a>
+    <a routerLink="/project/ {{item.id}}">view tasks</a>
     <button (click)="removeProject(item.id)">Remove</button>
   </article>
 }
