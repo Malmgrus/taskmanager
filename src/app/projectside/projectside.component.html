@@ -1,6 +1,4 @@
 <button (click)="addProject()">Add Project</button>
-<!--<input #searchInput type="text" placeholder="search for project">
-<button (click)="searchPro(searchInput.value)">search projects</button>-->
 <input (input)="searchPro($event)" type="text">
 
 @for (item of filteredPro; track $index) {

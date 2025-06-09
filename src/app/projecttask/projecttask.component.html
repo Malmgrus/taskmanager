@@ -4,11 +4,10 @@
     <h2>To do</h2>
     @for (item of loopTask(3); track $index) {
         @if (item.priority === 1) {
-            <p>priority {{item.priority}}</p>
             <article class="task-card">
-                <p>första</p>
                 <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
-                <input (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+                <input value={{item.description}} (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+                <input (input)="setDeadline(item.taskId, $event)" type="date" placeholder="Deadline">
                 <button (click)="changePrio(item.taskId, true)">increase priority</button>
                 <button (click)="changePrio(item.taskId, false)">decrease priority</button>
                 <button (click)="changeStatus(item.taskId, true)">move status forward</button>
@@ -20,11 +19,10 @@
     }
     @for (item of loopTask(3); track $index) {
         @if (item.priority === 2) {
-            <p>priority {{item.priority}}</p>
             <article class="task-card">
-            <p>första</p>
             <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
-            <input (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <input value={{item.description}} (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <input (input)="setDeadline(item.taskId, $event)" type="date" placeholder="Deadline">
             <button (click)="changePrio(item.taskId, true)">increase priority</button>
             <button (click)="changePrio(item.taskId, false)">decrease priority</button>
             <button (click)="changeStatus(item.taskId, true)">move status forward</button>
@@ -36,11 +34,10 @@
     }
     @for (item of loopTask(3); track $index) {
         @if (item.priority === 3) {
-            <p>priority {{item.priority}}</p>
             <article class="task-card">
-            <p>första</p>
             <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
-            <input (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <input value={{item.description}} (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <input (input)="setDeadline(item.taskId, $event)" type="date" placeholder="Deadline">
             <button (click)="changePrio(item.taskId, true)">increase priority</button>
             <button (click)="changePrio(item.taskId, false)">decrease priority</button>
             <button (click)="changeStatus(item.taskId, true)">move status forward</button>
@@ -56,9 +53,9 @@
     @for (item of loopTask(2); track $index) {
         @if (item.priority === 1) {
         <article class="task-card">
-            <p>andra</p>
             <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
-            <input (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <input value={{item.description}} (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <input (input)="setDeadline(item.taskId, $event)" type="date" placeholder="Deadline">
             <button (click)="changePrio(item.taskId, true)">increase priority</button>
             <button (click)="changePrio(item.taskId, false)">decrease priority</button>
             <button (click)="changeStatus(item.taskId, true)">move status forward</button>
@@ -71,9 +68,9 @@
     @for (item of loopTask(2); track $index) {
         @if (item.priority === 2) {
         <article class="task-card">
-            <p>andra</p>
             <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
-            <input (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <input value={{item.description}} (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <input (input)="setDeadline(item.taskId, $event)" type="date" placeholder="Deadline">
             <button (click)="changePrio(item.taskId, true)">increase priority</button>
             <button (click)="changePrio(item.taskId, false)">decrease priority</button>
             <button (click)="changeStatus(item.taskId, true)">move status forward</button>
@@ -86,9 +83,9 @@
     @for (item of loopTask(2); track $index) {
         @if (item.priority === 3) {
         <article class="task-card">
-            <p>andra</p>
             <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
-            <input (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <input value={{item.description}} (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <input (input)="setDeadline(item.taskId, $event)" type="date" placeholder="Deadline">
             <button (click)="changePrio(item.taskId, true)">increase priority</button>
             <button (click)="changePrio(item.taskId, false)">decrease priority</button>
             <button (click)="changeStatus(item.taskId, true)">move status forward</button>
@@ -104,9 +101,9 @@
     @for (item of loopTask(1); track $index) {
         @if (item.priority === 1) {
         <article class="task-card">
-            <p>tredje</p>
             <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
-            <input (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <input value={{item.description}} (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <input (input)="setDeadline(item.taskId, $event)" type="date" placeholder="Deadline">
             <button (click)="changePrio(item.taskId, true)">increase priority</button>
             <button (click)="changePrio(item.taskId, false)">decrease priority</button>
             <button (click)="changeStatus(item.taskId, true)">move status forward</button>
@@ -119,9 +116,9 @@
     @for (item of loopTask(1); track $index) {
         @if (item.priority === 2) {
         <article class="task-card">
-            <p>tredje</p>
             <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
-            <input (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <input value={{item.description}} (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <input (input)="setDeadline(item.taskId, $event)" type="date" placeholder="Deadline">
             <button (click)="changePrio(item.taskId, true)">increase priority</button>
             <button (click)="changePrio(item.taskId, false)">decrease priority</button>
             <button (click)="changeStatus(item.taskId, true)">move status forward</button>
@@ -134,9 +131,9 @@
     @for (item of loopTask(1); track $index) {
         @if (item.priority === 3) {
         <article class="task-card">
-            <p>tredje</p>
             <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
-            <input (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <input value={{item.description}} (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
+            <input value={{item.deadline}} (input)="setDeadline(item.taskId, $event)" type="date" placeholder="Deadline">
             <button (click)="changePrio(item.taskId, true)">increase priority</button>
             <button (click)="changePrio(item.taskId, false)">decrease priority</button>
             <button (click)="changeStatus(item.taskId, true)">move status forward</button>

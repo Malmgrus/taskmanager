@@ -2,7 +2,6 @@ import { Component} from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http'
 import { Projecttracker } from '../projecttracker';
 import { ProjectServiceService } from '../projectService.service';
 
@@ -10,8 +9,7 @@ import { ProjectServiceService } from '../projectService.service';
   selector: 'projectside',
   imports: [    CommonModule,
     FormsModule,
-    RouterModule,
-    HttpClientModule],
+    RouterModule],
   templateUrl: './projectside.component.html',
   styleUrl: './projectside.component.css'
 })
@@ -31,15 +29,19 @@ export class ProjectsideComponent {
 
   addProject() {
     this.count++;
-    this.project.push({id: this.count, proName: "project", tasks: 
-      [{taskId: 0, taskName: "", description: "", priority: 3, status: 1}]});
+//    this.project = [{id: this.count, proName: "project", tasks: []}]
+    this.project.push({id: this.count, proName: "project", tasks: []});
+//      [{taskId: 0, taskName: "", description: "", priority: 3, status: 3, deadline: null}]});
     
     this.ProjectServiceService.setProjects(this.project);
   }
 
   removeProject(id: number) {
-    this.project.splice(id, 1);
-    console.log(this.project);
+    const index = this.project.findIndex(i => i.id === id);
+    if (index !== -1) {
+      this.project.splice(index, 1);
+    }
+    console.log("id index ", index, "project ", this.project);
   }
 
   addName(id: number, $event: Event) {

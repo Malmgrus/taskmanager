@@ -1,11 +1,14 @@
 export interface Projecttracker {
     id: number,
     proName: string,
-    tasks: [{
-        taskId: number,
-        taskName: string,
-        description: string,
-        priority: number,
-        status: number
-    }]
+    tasks: tasktracker[]
+}
+
+export interface tasktracker {
+  taskId: number;
+  taskName: string;
+  description: string;
+  priority: number;
+  status: number;
+  deadline: Date | null;
 }

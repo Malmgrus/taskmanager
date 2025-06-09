@@ -1,30 +1,22 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Projecttracker } from './projecttracker';
+import { tasktracker } from './projecttracker';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectServiceService {
-  private projects: Projecttracker[] = [
-    {
-      id: 0,
-      proName: "project",
-      tasks: [
-        {
-          taskId: 0,
-          taskName: "task",
-          description: "",
-          priority: 3,
-          status: 3
-        }
-      ]
-    }
-  ];
+  private projects: Projecttracker[] = [];
+  private tasks: tasktracker[] = [];
 
   constructor() { }
 
   getProjects(): Projecttracker[] {
     return this.projects;
+  }
+
+  getTasks(): tasktracker[] {
+    return this.tasks;
   }
 
   setProjects(projects: Projecttracker[]): void {

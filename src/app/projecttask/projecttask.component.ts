@@ -1,7 +1,8 @@
-import { Component, OnInit, inject} from '@angular/core';
-import { Projecttracker } from '../projecttracker';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { Projecttracker, tasktracker } from '../projecttracker';
 import { ProjectServiceService } from '../projectService.service'
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { HttpclientService } from '../httpclient.service';
 
 @Component({
   selector: 'projecttask',
@@ -11,14 +12,15 @@ import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 })
 export class ProjecttaskComponent {
   private activatedRoute = inject(ActivatedRoute);
+  data: any;
   defaultName: string = "Task";
   project: Projecttracker[] = [];
+  task: tasktracker[] = [];
   proId: number = this.getPosition();
-  count: number = 0; //this.project[this.proId].tasks.length();
-
+  count: number = 0;
   
   proNameparam = this.activatedRoute.snapshot.params["proName"];
-    constructor(private router: Router, private ProjectServiceService: ProjectServiceService) {
+    constructor(private router: Router, private ProjectServiceService: ProjectServiceService, private HttpclientService: HttpclientService) {
   }
 
   getPosition(): number {
@@ -32,26 +34,47 @@ export class ProjecttaskComponent {
 
   ngOnInit() {
     this.project = this.ProjectServiceService.getProjects();
+    this.HttpclientService.getData().subscribe(data => {
+      this.data = data;
+      console.log("data ", this.data)
+    })
     this.proId = parseInt(this.activatedRoute.snapshot.params["id"]);
     this.count = this.project[this.getPosition()].tasks.length;
   }
 
   addTask() {
-
+    let desc: string = this.data.todo;
     for (let item of this.project) {
       if (item.id === this.proId) {
-        this.project[this.proId].tasks.push({taskId: this.count, taskName: "task", description: "", priority: 3, status: 1});
+        this.task.push({taskId: this.count, taskName: "task", description: desc, priority: 3, status: 3, deadline: null})
       }
     }
+
+    const newTask: tasktracker = {
+      taskId: this.count,
+      taskName: this.defaultName,
+      description: desc,
+      priority: 3,
+      status: 3,
+      deadline: null
+    }
+
+    this.project[this.getPosition()].tasks.push(newTask);
+    console.log("project", this.project);
+/*    const findTask = this.project[this.getPosition()].tasks.find(i  => i.taskId === this.proId);
+    console.log("findtask", findTask)
+    if (findTask) {
+      console.log("hittade")
+      this.project[this.getPosition()].tasks.push(findTask);
+    }
+    console.log("project", this.project);*/
     this.count++;
-/*    const project = this.project.find(item => item.id === this.proId);
-    if (project) {
-      project.tasks = [{taskId: this.count, taskName: this.defaultName, description: "", priority: 3, status: 1}];
-    }*/
   }
 
   loopTask(status: number) {
-    let statusList = [];
+    let statusList: any[] = [];
+
+    
 
     for (let selectPro of this.project) {
       for (let selectTask of selectPro.tasks) {
@@ -60,12 +83,6 @@ export class ProjecttaskComponent {
         }
       }
     }
-
-    //make sort
-    
-
-    //const sortedList: any[] = statusList[2].priority.sort((n1, n2) => n1 - n2);
-
     return statusList;
   }
 
@@ -78,45 +95,66 @@ export class ProjecttaskComponent {
     }
   }
 
+  setDeadline(id: number, $event: Event) {
+    const input = $event.target as HTMLInputElement;
+    const newDeadline = new Date(input.value);
+    const todaysDate = new Date();
+    const task = this.project[this.getPosition()].tasks.find(t => t.taskId === id);
+    if (task) {
+      if (new Date(newDeadline) >= todaysDate) {
+//        task.deadline?.set(new Date(newDeadline))
+        //task.deadline?.set(newDeadline)// = signal<Date>(newDeadline);
+        //deadline: signal(new Date(newDeadline))
+      } else {
+        alert("Date has already passed, please choose a valid date");
+      }
+      console.log("task deadline", this.project)
+      //console.log("task deadline ", task.deadline);
+    }
+  }
+
   addTaskDescription(id: number, $event: Event) {
     const input = $event.target as HTMLInputElement;
     let taskDesc = input.value;
-    const task = this.project[this.proId].tasks.find(t => t.taskId === id);
+    const task = this.project[this.getPosition()].tasks.find(t => t.taskId === id);
     if (task) {
-      task.description = taskDesc;
+//      this.ProjectServiceService.setDeadline(id, this.proId, new Date(taskDesc));
     }
+    console.log("deadline rä", this.project)
   }
 
   changePrio(id: number, decide: boolean) {
     
     let newPrio: number;
     if (decide === true) {
-      newPrio = this.project[this.proId].tasks[id].priority + 1;
+      newPrio = this.project[this.getPosition()].tasks[id].priority + 1;
     } else {
-      newPrio = this.project[this.proId].tasks[id].priority - 1;
+      newPrio = this.project[this.getPosition()].tasks[id].priority - 1;
     }
     
     if (newPrio >= 1 && newPrio <= 3) {
-      console.log("prio", newPrio)
-      this.project[this.proId].tasks[id].priority = newPrio;
+      this.project[this.getPosition()].tasks[id].priority = newPrio;
     }
   }
 
   changeStatus(id: number, decide: boolean) {
     let newStatus: number;
     if (decide === true) {
-      newStatus = this.project[this.proId].tasks[id].status - 1;
+      newStatus = this.project[this.getPosition()].tasks[id].status - 1;
     } else {
-      newStatus = this.project[this.proId].tasks[id].status + 1;
+      newStatus = this.project[this.getPosition()].tasks[id].status + 1;
     }
     
     if (newStatus >= 1 && newStatus <= 3) {
-      this.project[this.proId].tasks[id].status = newStatus;
+      this.project[this.getPosition()].tasks[id].status = newStatus;
     }
-    console.log("asoidaöksjd")
     }
 
   removeTask(id: number) {
-
+    const index = this.project[this.getPosition()].tasks.findIndex(i => i.taskId === id);
+    if (index !== -1) {
+      this.project[this.getPosition()].tasks.splice(index, 1);
+    }
+    console.log("id index ", index, "project ", this.project);
   }
 }
