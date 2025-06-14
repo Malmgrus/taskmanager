@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ProjectServiceService } from '../projectService.service';
 import { ProjectsideComponent } from './projectside.component';
 
 describe('ProjectsideComponent', () => {
@@ -20,4 +20,21 @@ describe('ProjectsideComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it("should get projects from service", () => {
+    const projectService = TestBed.inject(ProjectServiceService);
+    const project = {
+      id: 1,
+      proName: "project1",
+      description: "e",
+      tasks: []
+    }
+    projectService.setProjects([project])
+    spyOn(projectService, 'getProjects').and.callThrough();
+    
+      component.ngOnInit();
+    
+    expect(projectService.getProjects).toHaveBeenCalled();
+    expect(component.project.length).toBeGreaterThan(0);
+  })
 });

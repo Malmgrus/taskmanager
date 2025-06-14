@@ -1,31 +1,34 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { Projecttracker, tasktracker } from '../projecttracker';
 import { ProjectServiceService } from '../projectService.service'
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { HttpclientService } from '../httpclient.service';
+import { ReusabletaskComponent } from '../reusabletask/reusabletask.component';
+import { CustomPipe } from '../custom.pipe';
 
 @Component({
   selector: 'projecttask',
-  imports: [RouterModule],
+  imports: [RouterModule, ReusabletaskComponent, CustomPipe],
   templateUrl: './projecttask.component.html',
   styleUrl: './projecttask.component.css'
 })
 export class ProjecttaskComponent {
   private activatedRoute = inject(ActivatedRoute);
   data: any;
+  newData = signal<any>({});
   defaultName: string = "Task";
   project: Projecttracker[] = [];
   task: tasktracker[] = [];
-  proId: number = this.getPosition();
-  count: number = 0;
+  proId: number = -1;
+  count = signal<number>(0);
   
-  proNameparam = this.activatedRoute.snapshot.params["proName"];
-    constructor(private router: Router, private ProjectServiceService: ProjectServiceService, private HttpclientService: HttpclientService) {
+    constructor(private router: Router, private ProjectServiceService: ProjectServiceService) {
   }
 
   getPosition(): number {
     for (let i = 0; i < this.project.length; i++) {
-      if (this.project[i].id === this.proId) {
+      if (this.project[i].id == this.proId) {
         return i;
       }
     }
@@ -34,47 +37,26 @@ export class ProjecttaskComponent {
 
   ngOnInit() {
     this.project = this.ProjectServiceService.getProjects();
-    this.HttpclientService.getData().subscribe(data => {
-      this.data = data;
-      console.log("data ", this.data)
-    })
     this.proId = parseInt(this.activatedRoute.snapshot.params["id"]);
-    this.count = this.project[this.getPosition()].tasks.length;
+    this.count.set(this.project[this.getPosition()].tasks.length);
   }
 
   addTask() {
-    let desc: string = this.data.todo;
-    for (let item of this.project) {
-      if (item.id === this.proId) {
-        this.task.push({taskId: this.count, taskName: "task", description: desc, priority: 3, status: 3, deadline: null})
-      }
-    }
-
     const newTask: tasktracker = {
-      taskId: this.count,
+      taskId: this.count(),
       taskName: this.defaultName,
-      description: desc,
       priority: 3,
       status: 3,
       deadline: null
-    }
+    };
 
     this.project[this.getPosition()].tasks.push(newTask);
-    console.log("project", this.project);
-/*    const findTask = this.project[this.getPosition()].tasks.find(i  => i.taskId === this.proId);
-    console.log("findtask", findTask)
-    if (findTask) {
-      console.log("hittade")
-      this.project[this.getPosition()].tasks.push(findTask);
-    }
-    console.log("project", this.project);*/
-    this.count++;
+    this.count.update(value => value + 1);
+    console.log(this.count())
   }
 
-  loopTask(status: number) {
+  loopTask(status: number): tasktracker[] {
     let statusList: any[] = [];
-
-    
 
     for (let selectPro of this.project) {
       for (let selectTask of selectPro.tasks) {
@@ -83,13 +65,13 @@ export class ProjecttaskComponent {
         }
       }
     }
-    return statusList;
+    return statusList.sort((a, b) => a.priority - b.priority)
   }
 
   addTaskName(id: number, $event: Event) {
     const input = $event.target as HTMLInputElement;
     let taskName = input.value;
-    const task = this.project[this.proId].tasks.find(t => t.taskId === id);
+    const task = this.project[this.getPosition()].tasks.find(t => t.taskId === id);
     if (task) {
       task.taskName = taskName;
     }
@@ -97,45 +79,42 @@ export class ProjecttaskComponent {
 
   setDeadline(id: number, $event: Event) {
     const input = $event.target as HTMLInputElement;
-    const newDeadline = new Date(input.value);
-    const todaysDate = new Date();
+    const newDeadline: Date = new Date(String(input.value));
+    const todaysDate: Date = new Date();
+
     const task = this.project[this.getPosition()].tasks.find(t => t.taskId === id);
     if (task) {
-      if (new Date(newDeadline) >= todaysDate) {
-//        task.deadline?.set(new Date(newDeadline))
-        //task.deadline?.set(newDeadline)// = signal<Date>(newDeadline);
-        //deadline: signal(new Date(newDeadline))
+      if (newDeadline >= todaysDate) {
+        const formatedDate = formatDate(newDeadline, 'yyyy-MM-dd', 'en-US');
+        task.deadline = formatedDate;
       } else {
         alert("Date has already passed, please choose a valid date");
       }
-      console.log("task deadline", this.project)
-      //console.log("task deadline ", task.deadline);
     }
-  }
-
-  addTaskDescription(id: number, $event: Event) {
-    const input = $event.target as HTMLInputElement;
-    let taskDesc = input.value;
-    const task = this.project[this.getPosition()].tasks.find(t => t.taskId === id);
-    if (task) {
-//      this.ProjectServiceService.setDeadline(id, this.proId, new Date(taskDesc));
-    }
-    console.log("deadline rä", this.project)
   }
 
   changePrio(id: number, decide: boolean) {
     
     let newPrio: number;
     if (decide === true) {
-      newPrio = this.project[this.getPosition()].tasks[id].priority + 1;
-    } else {
       newPrio = this.project[this.getPosition()].tasks[id].priority - 1;
+    } else {
+      newPrio = this.project[this.getPosition()].tasks[id].priority + 1;
     }
-    
+
     if (newPrio >= 1 && newPrio <= 3) {
       this.project[this.getPosition()].tasks[id].priority = newPrio;
     }
   }
+
+/*  change(id: T, decide: T, prop: T) {
+    let newChange: number;
+    if (decide === true) {
+      newChange = this.project[this.getPosition()].tasks[id].status - 1;
+    } else {
+      newChange = this.project[this.getPosition()].tasks[id].status + 1;
+    }
+  }*/
 
   changeStatus(id: number, decide: boolean) {
     let newStatus: number;
@@ -148,13 +127,12 @@ export class ProjecttaskComponent {
     if (newStatus >= 1 && newStatus <= 3) {
       this.project[this.getPosition()].tasks[id].status = newStatus;
     }
-    }
+  }
 
   removeTask(id: number) {
     const index = this.project[this.getPosition()].tasks.findIndex(i => i.taskId === id);
     if (index !== -1) {
       this.project[this.getPosition()].tasks.splice(index, 1);
     }
-    console.log("id index ", index, "project ", this.project);
   }
 }

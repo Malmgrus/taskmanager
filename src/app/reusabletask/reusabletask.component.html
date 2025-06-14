@@ -1,0 +1,8 @@
+<section>
+    <input [value]="task.taskName" (input)="taskName.emit($event)" type="text" />
+    <input [value]="task.deadline" (input)="taskDeadline.emit($event)" type="date" />
+    <button (click)="increasePriority.emit()">Increase Priority</button>
+    <button (click)="decreasePriority.emit()">Decrease Priority</button>
+    <button (click)="increaseStatus.emit()">Move Status Forward</button>
+    <button (click)="decreaseStatus.emit()">Move Status Backwards</button>
+</section>

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Projecttracker } from '../projecttracker';
 import { ProjectServiceService } from '../projectService.service';
+import { HttpclientService } from '../httpclient.service';
 
 @Component({
   selector: 'projectside',
@@ -15,25 +16,39 @@ import { ProjectServiceService } from '../projectService.service';
 })
 
 export class ProjectsideComponent {
+  data: any;
   count: number = 0;
   default = "";
   project: Projecttracker[] = [];
   filteredPro: any[] = [];
 
-    constructor(private router: Router, private ProjectServiceService: ProjectServiceService) {
+    constructor(private router: Router, private ProjectServiceService: ProjectServiceService, private HttpclientService: HttpclientService) {
   }
+
   ngOnInit() {
     this.project = this.ProjectServiceService.getProjects();
     this.filteredPro = this.project
   }
 
   addProject() {
-    this.count++;
-//    this.project = [{id: this.count, proName: "project", tasks: []}]
-    this.project.push({id: this.count, proName: "project", tasks: []});
-//      [{taskId: 0, taskName: "", description: "", priority: 3, status: 3, deadline: null}]});
+    this.HttpclientService.getData().subscribe(data => {
+      this.data = data;
+
+      this.count++;
+      this.project.push({id: this.count, proName: "project", description: this.data.todo, tasks: []});
+      
+      this.ProjectServiceService.setProjects(this.project);
+    })
+  }
+
+  addDescription(id: number, $event: Event) {
+    const input = $event.target as HTMLInputElement;
+    let taskDesc = input.value;
+    const pro = this.project.find(t => t.id === id);
+    if (pro) {
+      pro.description = taskDesc;
+    }
     
-    this.ProjectServiceService.setProjects(this.project);
   }
 
   removeProject(id: number) {
@@ -61,13 +76,12 @@ export class ProjectsideComponent {
     }
 
     if (input.value === "") {
-      this.filteredPro.splice(1)
+      this.filteredPro = [];
       this.filteredPro = [...this.project];
-    } else if (tempArr.includes(input.value)) {
-      if (!this.filteredPro.includes(input.value)) {
-        const project = this.project.filter(item => item.proName.includes(input.value))
-        this.filteredPro = [...project];
-      }
-    }  
+    } else {
+      const filtered = this.project.filter(item =>
+      item.proName.toLowerCase().includes(input.value.toLowerCase()))
+      this.filteredPro = [...filtered];
+    }
   }
 };

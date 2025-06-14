@@ -1,147 +1,27 @@
 <button (click)="addTask()">Add task</button>
 <div class="tasks">
-<content class="row">
-    <h2>To do</h2>
-    @for (item of loopTask(3); track $index) {
-        @if (item.priority === 1) {
-            <article class="task-card">
-                <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
-                <input value={{item.description}} (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
-                <input (input)="setDeadline(item.taskId, $event)" type="date" placeholder="Deadline">
-                <button (click)="changePrio(item.taskId, true)">increase priority</button>
-                <button (click)="changePrio(item.taskId, false)">decrease priority</button>
-                <button (click)="changeStatus(item.taskId, true)">move status forward</button>
-                <button (click)="changeStatus(item.taskId, false)">move status backwards</button>
-                <button (click)="removeTask(item.taskId)">Remove</button>
-                <p>You have not started working on this task</p>
-            </article>
-        }
+@for (status of [3, 2, 1]; track $index) {
+    <section class="row">
+    @if (status === 3) {
+        <h2>{{"start" | custom}}</h2>
     }
-    @for (item of loopTask(3); track $index) {
-        @if (item.priority === 2) {
-            <article class="task-card">
-            <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
-            <input value={{item.description}} (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
-            <input (input)="setDeadline(item.taskId, $event)" type="date" placeholder="Deadline">
-            <button (click)="changePrio(item.taskId, true)">increase priority</button>
-            <button (click)="changePrio(item.taskId, false)">decrease priority</button>
-            <button (click)="changeStatus(item.taskId, true)">move status forward</button>
-            <button (click)="changeStatus(item.taskId, false)">move status backwards</button>
-            <button (click)="removeTask(item.taskId)">Remove</button>
-            <p>You have not started working on this task</p>
-        </article>
-        }
+    @if (status === 2) {
+        <h2>{{"in progress" | custom}}</h2>
     }
-    @for (item of loopTask(3); track $index) {
-        @if (item.priority === 3) {
-            <article class="task-card">
-            <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
-            <input value={{item.description}} (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
-            <input (input)="setDeadline(item.taskId, $event)" type="date" placeholder="Deadline">
-            <button (click)="changePrio(item.taskId, true)">increase priority</button>
-            <button (click)="changePrio(item.taskId, false)">decrease priority</button>
-            <button (click)="changeStatus(item.taskId, true)">move status forward</button>
-            <button (click)="changeStatus(item.taskId, false)">move status backwards</button>
-            <button (click)="removeTask(item.taskId)">Remove</button>
-            <p>You have not started working on this task</p>
-        </article>
-        }
+    @if (status === 1) {
+        <h2>{{"done" | custom}}</h2>
     }
-</content>
-<content class="row">
-    <h2>Working on</h2>
-    @for (item of loopTask(2); track $index) {
-        @if (item.priority === 1) {
-        <article class="task-card">
-            <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
-            <input value={{item.description}} (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
-            <input (input)="setDeadline(item.taskId, $event)" type="date" placeholder="Deadline">
-            <button (click)="changePrio(item.taskId, true)">increase priority</button>
-            <button (click)="changePrio(item.taskId, false)">decrease priority</button>
-            <button (click)="changeStatus(item.taskId, true)">move status forward</button>
-            <button (click)="changeStatus(item.taskId, false)">move status backwards</button>
-            <button (click)="removeTask(item.taskId)">Remove</button>
-            <p>You have begun working on this task</p>
-        </article>
+        @for (item of loopTask(status); track $index) {
+            <reusabletask class="task-card"
+                [task]="item"
+                (taskName)="addTaskName(item.taskId, $event)"
+                (taskDeadline)="setDeadline(item.taskId, $event)"
+                (increasePriority)="changePrio(item.taskId, true)"
+                (decreasePriority)="changePrio(item.taskId, false)"
+                (increaseStatus)="changeStatus(item.taskId, true)"
+                (decreaseStatus)="changeStatus(item.taskId, false)"
+                (removeTask)="removeTask(item.taskId)"
+            ></reusabletask>
         }
-    }
-    @for (item of loopTask(2); track $index) {
-        @if (item.priority === 2) {
-        <article class="task-card">
-            <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
-            <input value={{item.description}} (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
-            <input (input)="setDeadline(item.taskId, $event)" type="date" placeholder="Deadline">
-            <button (click)="changePrio(item.taskId, true)">increase priority</button>
-            <button (click)="changePrio(item.taskId, false)">decrease priority</button>
-            <button (click)="changeStatus(item.taskId, true)">move status forward</button>
-            <button (click)="changeStatus(item.taskId, false)">move status backwards</button>
-            <button (click)="removeTask(item.taskId)">Remove</button>
-            <p>You have begun working on this task</p>
-        </article>
-        }
-    }
-    @for (item of loopTask(2); track $index) {
-        @if (item.priority === 3) {
-        <article class="task-card">
-            <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
-            <input value={{item.description}} (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
-            <input (input)="setDeadline(item.taskId, $event)" type="date" placeholder="Deadline">
-            <button (click)="changePrio(item.taskId, true)">increase priority</button>
-            <button (click)="changePrio(item.taskId, false)">decrease priority</button>
-            <button (click)="changeStatus(item.taskId, true)">move status forward</button>
-            <button (click)="changeStatus(item.taskId, false)">move status backwards</button>
-            <button (click)="removeTask(item.taskId)">Remove</button>
-            <p>You have begun working on this task</p>
-        </article>
-        }
-    }
-</content>
-<content class="row">
-    <h2>finished</h2>
-    @for (item of loopTask(1); track $index) {
-        @if (item.priority === 1) {
-        <article class="task-card">
-            <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
-            <input value={{item.description}} (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
-            <input (input)="setDeadline(item.taskId, $event)" type="date" placeholder="Deadline">
-            <button (click)="changePrio(item.taskId, true)">increase priority</button>
-            <button (click)="changePrio(item.taskId, false)">decrease priority</button>
-            <button (click)="changeStatus(item.taskId, true)">move status forward</button>
-            <button (click)="changeStatus(item.taskId, false)">move status backwards</button>
-            <button (click)="removeTask(item.taskId)">Remove</button>
-            <p>You have finished this task</p>
-        </article>
-        }
-    }
-    @for (item of loopTask(1); track $index) {
-        @if (item.priority === 2) {
-        <article class="task-card">
-            <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
-            <input value={{item.description}} (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
-            <input (input)="setDeadline(item.taskId, $event)" type="date" placeholder="Deadline">
-            <button (click)="changePrio(item.taskId, true)">increase priority</button>
-            <button (click)="changePrio(item.taskId, false)">decrease priority</button>
-            <button (click)="changeStatus(item.taskId, true)">move status forward</button>
-            <button (click)="changeStatus(item.taskId, false)">move status backwards</button>
-            <button (click)="removeTask(item.taskId)">Remove</button>
-            <p>You have finished this task</p>
-        </article>
-        }
-    }
-    @for (item of loopTask(1); track $index) {
-        @if (item.priority === 3) {
-        <article class="task-card">
-            <input value={{item.taskName}} (input)="addTaskName(item.taskId, $event)" type="text" placeholder="Task Name">
-            <input value={{item.description}} (input)="addTaskDescription(item.taskId, $event)" type="text" placeholder="Task Description">
-            <input value={{item.deadline}} (input)="setDeadline(item.taskId, $event)" type="date" placeholder="Deadline">
-            <button (click)="changePrio(item.taskId, true)">increase priority</button>
-            <button (click)="changePrio(item.taskId, false)">decrease priority</button>
-            <button (click)="changeStatus(item.taskId, true)">move status forward</button>
-            <button (click)="changeStatus(item.taskId, false)">move status backwards</button>
-            <button (click)="removeTask(item.taskId)">Remove</button>
-            <p>You have finished this task</p>
-        </article>
-        }
-    }
-</content>
-</div>
+    </section>
+}

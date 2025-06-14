@@ -12,5 +12,5 @@ import { ProjecttaskComponent } from './projecttask/projecttask.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'taskmanager';
+  title = 'Taskmanager';
 }
