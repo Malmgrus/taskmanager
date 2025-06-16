@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProjectServiceService } from '../projectService.service';
 import { ProjectsideComponent } from './projectside.component';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('ProjectsideComponent', () => {
   let component: ProjectsideComponent;
@@ -8,6 +9,7 @@ describe('ProjectsideComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [HttpClient, HttpHandler],
       imports: [ProjectsideComponent]
     })
     .compileComponents();

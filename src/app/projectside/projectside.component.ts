@@ -48,7 +48,7 @@ export class ProjectsideComponent {
     if (pro) {
       pro.description = taskDesc;
     }
-    
+
   }
 
   removeProject(id: number) {
@@ -56,7 +56,6 @@ export class ProjectsideComponent {
     if (index !== -1) {
       this.project.splice(index, 1);
     }
-    console.log("id index ", index, "project ", this.project);
   }
 
   addName(id: number, $event: Event) {
@@ -70,10 +69,6 @@ export class ProjectsideComponent {
 
   searchPro($event: Event) {
     const input = $event.target as HTMLInputElement;
-    let tempArr = [];
-    for (let item of this.project) {
-      tempArr.push(item.proName);
-    }
 
     if (input.value === "") {
       this.filteredPro = [];

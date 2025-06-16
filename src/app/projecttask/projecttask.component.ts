@@ -55,6 +55,7 @@ export class ProjecttaskComponent {
     console.log(this.count())
   }
 
+  // loops thorugh to get all tasks, sorts them by priority and displays them.
   loopTask(status: number): tasktracker[] {
     let statusList: any[] = [];
 
@@ -106,15 +107,6 @@ export class ProjecttaskComponent {
       this.project[this.getPosition()].tasks[id].priority = newPrio;
     }
   }
-
-/*  change(id: T, decide: T, prop: T) {
-    let newChange: number;
-    if (decide === true) {
-      newChange = this.project[this.getPosition()].tasks[id].status - 1;
-    } else {
-      newChange = this.project[this.getPosition()].tasks[id].status + 1;
-    }
-  }*/
 
   changeStatus(id: number, decide: boolean) {
     let newStatus: number;
