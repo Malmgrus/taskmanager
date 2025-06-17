@@ -1,11 +1,32 @@
 <button (click)="addProject()">Add Project</button>
 <input (input)="searchPro($event)" type="text">
+<form [formGroup]="projectForm">
+  <div formArrayName="projects">
+    <div *ngFor="let group of projectsFormArray.controls; let i = index" [formGroupName]="i" class="project-card">
+      
+      <input
+        type="text"
+        formControlName="proNameForm"
+        placeholder="Project Name"
+        (input)="addName(project[i].id, $event)"
+      />
+      <div *ngIf="group.get('proNameForm')?.invalid && group.get('proNameForm')?.touched">
+        Project Name is required
+      </div>
 
-@for (item of filteredPro; track $index) {
-  <article class="project-card">
-    <input value={{item.proName}} (input)="addName(item.id, $event)" type="text" placeholder="Project Name">
-    <input value={{item.description}} (input)="addDescription(item.id, $event)" type="text" placeholder="Project Description">
-    <a routerLink="/project/ {{item.id}}">view tasks</a>
-    <button (click)="removeProject(item.id)">Remove</button>
-  </article>
-}
+      <input
+        type="text"
+        formControlName="proDescForm"
+        placeholder="Project Description"
+        (input)="addDescription(project[i].id, $event)"
+      />
+      <div *ngIf="group.get('proDescForm')?.invalid && group.get('proDescForm')?.touched">
+        Project Description is required
+      </div>
+
+      <a [routerLink]="'/project/' + project[i].id">View Tasks</a>
+      <button type="button" (click)="removeProject(i)">Remove</button>
+    </div>
+  </div>
+</form>
+

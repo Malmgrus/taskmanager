@@ -16,7 +16,6 @@ import { CustomPipe } from '../custom.pipe';
 export class ProjecttaskComponent {
   private activatedRoute = inject(ActivatedRoute);
   data: any;
-  newData = signal<any>({});
   defaultName: string = "Task";
   project: Projecttracker[] = [];
   task: tasktracker[] = [];
@@ -52,7 +51,6 @@ export class ProjecttaskComponent {
 
     this.project[this.getPosition()].tasks.push(newTask);
     this.count.update(value => value + 1);
-    console.log(this.count())
   }
 
   // loops thorugh to get all tasks, sorts them by priority and displays them.
